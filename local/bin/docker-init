@@ -1,0 +1,15 @@
+#!/bin/sh
+
+set -e
+
+docker-install -r -u -c minidlna
+
+mkdir -p /var/run/minidlna
+chown minidlna:minidlna /var/run/minidlna
+chmod 775 /var/run/minidlna
+mkdir -p /var/cache/minidlna
+chown minidlna:minidlna /var/cache/minidlna
+
+mkdir -p /conf.d /data /conf.d/minidlna
+touch /conf.d/minidlna/minidlna.conf
+

@@ -1,0 +1,40 @@
+#!/bin/sh
+
+set -e
+
+if [ -e /.init ]; then
+	exit
+fi
+
+touch /.init
+
+mkdir -p /conf.d/minidlna
+
+FRIENDLY_NAME=${FRIENDLY_NAME:-DLNA Server}
+MEDIA_DIR=${MEDIA_DIR:-/data}
+
+if [ ! -s /conf.d/minidlna/minidlna.conf ]; then
+	cat /etc/minidlna.conf > /tmp/minidlna.conf
+	sed -i -e "s/^#\?\(friendly_name\)=.*/\1=${FRIENDLY_NAME}/g" /tmp/minidlna.conf
+
+	sed -i -e "s@^#\?\(db_dir\)=.*@\1=/conf.d/minidlna@g" /tmp/minidlna.conf
+	sed -i -e "s/^\(media_dir=.*\)$/#\1/g" /tmp/minidlna.conf
+	echo -e "\n# set this to the directory you want scanned." >> /tmp/minidlna.conf
+	for dir in $(echo ${MEDIA_DIR} | sed -e "s/,/\n/g")
+	do
+		if [ -z "${dir}" -o ! -e "${dir}" ]; then
+			continue
+		fi
+		echo "media_dir=${dir}" >> /tmp/minidlna.conf
+	done
+
+	if [ ! -z "${NETWORK_INTERFACE}" ]; then
+		sed -i -e "s/^#\?\(network_interface\)=.*/\1=${NETWORK_INTERFACE}/g" /tmp/minidlna.conf
+	fi
+
+	cat /tmp/minidlna.conf > /conf.d/minidlna/minidlna.conf
+	rm -rf /tmp/minidlna.conf
+fi
+
+chown -R minidlna:minidlna /conf.d/minidlna
+
