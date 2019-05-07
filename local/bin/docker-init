@@ -2,7 +2,7 @@
 
 set -e
 
-docker-install -r -u -c minidlna
+docker-install -r -u -c su-exec minidlna
 
 mkdir -p /var/run/minidlna
 chown minidlna:minidlna /var/run/minidlna
