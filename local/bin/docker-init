@@ -2,19 +2,19 @@
 
 set -e
 
-echo "==> Installing required packages"
+echo "[$(TZ="GMT-9" date '+%Y-%m-%d %H:%M:%S')] ==> Installing required packages"
 PKG_LIB="su-exec minidlna"
 PKG_DEV=""
-docker-install -r -u  ${PKG_LIB} ${PKG_DEV}
-echo "==> OK"
+docker-install -r -u ${PKG_LIB} ${PKG_DEV}
+echo "[$(TZ="GMT-9" date '+%Y-%m-%d %H:%M:%S')] ==> OK"
 echo
 
-echo "==> Uninstalling unnecessary packages"
+echo "[$(TZ="GMT-9" date '+%Y-%m-%d %H:%M:%S')] ==> Uninstalling unnecessary packages"
 docker-install -d -c ${PKG_DEV}
-echo "==> OK"
+echo "[$(TZ="GMT-9" date '+%Y-%m-%d %H:%M:%S')] ==> OK"
 echo
 
-echo "==> Setting basic configurations"
+echo "[$(TZ="GMT-9" date '+%Y-%m-%d %H:%M:%S')] ==> Setting basic configurations"
 mkdir -p /var/run/minidlna
 chown minidlna:minidlna /var/run/minidlna
 chmod 775 /var/run/minidlna
@@ -23,6 +23,6 @@ chown minidlna:minidlna /var/cache/minidlna
 
 mkdir -p /conf.d /data /conf.d/minidlna
 touch /conf.d/minidlna/minidlna.conf
-echo "==> OK"
+echo "[$(TZ="GMT-9" date '+%Y-%m-%d %H:%M:%S')] ==> OK"
 echo
 
