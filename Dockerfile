@@ -1,1 +1,14 @@
-Dockerfile.aarch64
+FROM forumi0721/alpine-base:aarch64
+
+LABEL maintainer="forumi0721@gmail.com"
+
+COPY local/. /usr/local/
+
+RUN ["docker-build"]
+
+ENTRYPOINT ["docker-run"]
+
+EXPOSE 8200/tcp
+
+VOLUME /conf.d
+
